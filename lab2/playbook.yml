@@ -1,0 +1,7 @@
+---
+- name: Test playbook with SSH Jump host and ping module
+  hosts: targets
+  tasks:
+    - name: Ping the target hosts
+      ansible.builtin.ping:
+       

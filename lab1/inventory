@@ -1,0 +1,11 @@
+
+[web]
+Node01-rocky1
+
+[db]
+Node02-ubuntu1
+
+[dev:children]
+web
+db
+

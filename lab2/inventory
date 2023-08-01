@@ -1,0 +1,5 @@
+[targets]
+target1
+#target2 ansible_host=target2_ip ansible_user=target_user
+# Add more target hosts as needed
+

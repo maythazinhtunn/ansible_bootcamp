@@ -1,0 +1,27 @@
+---
+- name: web server setup
+  hosts: web
+  tasks:
+    - name: install apache
+      ansible.builtin.dnf:
+        name: httpd
+        state: present
+
+    - name: create index.html
+      #ansible.builtin.shell: "echo 'Welcome to Ansible Bootcamp!' > /tmp/index.html"
+      ansible.builtin.copy:
+        content: "Hello World!!!"
+        dest: /var/www/html/index.html
+    - name: enable and start httpd
+      ansible.builtin.systemd:
+        name: httpd
+        state: started
+        enabled: yes
+    - name: allow firewall
+      ansible.posix.firewalld:
+        service: http
+        permanent: true
+        state: enabled
+        immediate: true
+
+

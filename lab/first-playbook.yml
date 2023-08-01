@@ -1,0 +1,23 @@
+---
+- name: first play
+  hosts: web
+  become: true
+  tasks:
+  - name: create a new file
+    file:
+      path: /tmp/web.conf
+      mode: 0664
+      owner: automate
+      state: touch
+
+- name: second play
+  hosts: db
+  become: true
+  tasks:
+  - name: create a new file
+    file:
+      path: /tmp/db.conf
+      mode: 0664
+      owner: automate
+      state: touch
+

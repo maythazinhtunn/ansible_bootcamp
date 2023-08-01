@@ -1,0 +1,37 @@
+---
+- name: Create a file with node information and fetch it to the control node
+  hosts: all
+  gather_facts: yes
+
+  tasks:
+    - name: Create the node information file
+      copy:
+        dest: "/etc/{{ ansible_hostname }}.txt"
+        content: |
+          HOSTNAME = {{ ansible_hostname }}
+          KERNEL = {{ ansible_kernel }}
+          DISTRIBUTION = {{ ansible_distribution }}
+          DISTRIBUTION_VERSION = {{ ansible_distribution_version }}
+          CPU_CORES = {{ ansible_processor_cores }}
+          MEMORY_TOTAL (MB) = {{ ansible_memtotal_mb }}
+          DEFAULT_IPV4_ADDR = {{ ansible_default_ipv4.address }}
+      become: yes
+
+    - name: Create the managed_nodes directory on the control node
+      file:
+        path: "/tmp/managed_nodes"
+        state: directory
+      delegate_to: localhost
+
+    - name: Change file ownership, group and permissions
+      ansible.builtin.file:
+        path: "/tmp/managed_nodes/"
+        mode: '777'
+      delegate_to: localhost
+
+    - name: Fetch the node information file to the control node
+      fetch:
+        src: "/etc/{{ ansible_hostname }}.txt"
+        dest: "/tmp/managed_nodes/"
+        flat: yes
+      become: yes
